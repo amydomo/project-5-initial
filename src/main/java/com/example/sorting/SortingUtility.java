@@ -49,12 +49,32 @@ public class SortingUtility {
             }
 
         } while (swapped); //if no elements have been swapped, then the list is sorted
-}
+    }
 
     public static <T extends Comparable<T>> void shellSort(T[] data) {
 
+        // Ciura gap sequence
+        int[] gaps = {701, 301, 132, 57, 23, 10, 4, 1};
+        int n = data.length;
 
+        // Start with the largest gap and work down to a gap of 1
+        for (int gap : gaps) {
+            // Do a gapped insertion sort for every element in gaps
+            // Each loop leaves a[0..gap-1] in gapped order
+            for (int i = gap; i < n; i++) {
+                // Save data[i] in temp and make a hole at position i
+                T temp = data[i];
 
+                // Shift earlier gap-sorted elements up until the correct location for data[i] is found
+                int j;
+                for (j = i; j >= gap && data[j - gap].compareTo(temp) > 0; j -= gap) {
+                    data[j] = data[j - gap];
+                }
+
+                // Put temp (the original data[i]) in its correct location
+                data[j] = temp;
+            }
+        }
     }
 
     private static <T extends Comparable<T>> void swap(T[] data, int index1, int index2) {
@@ -65,7 +85,4 @@ public class SortingUtility {
 
     }
 }
-
-
-
 
